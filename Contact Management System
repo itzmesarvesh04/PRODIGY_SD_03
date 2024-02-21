@@ -1,0 +1,132 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+ class ContactInformation {
+    private String name;
+    private String phoneNumber;
+    private String email;
+
+    public ContactInformation(String name, String phoneNumber, String email) {
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+    @Override
+    public String toString() {
+        return "Name: " + name + "\nPhone Number: " + phoneNumber + "\nEmail: " + email + "\n";
+    }
+}
+ class ContactManager {
+    private List<ContactInformation> contacts = new ArrayList<>();
+
+    public void addContact(ContactInformation contact) {
+        contacts.add(contact);
+    }
+
+    public void editContact(int index, ContactInformation updatedContact) {
+        if (index >= 0 && index < contacts.size()) {
+            contacts.set(index, updatedContact);
+        }
+    }
+
+    public void deleteContact(int index) {
+        if (index >= 0 && index < contacts.size()) {
+            contacts.remove(index);
+        }
+    }
+
+    public ContactInformation getContact(int index) {
+        if (index >= 0 && index < contacts.size()) {
+            return contacts.get(index);
+        }
+        return null;
+    }
+
+    public List<ContactInformation> getAllContacts() {
+        return contacts;
+    }
+}
+public class ContactManagementSystem {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ContactManager contactManager = new ContactManager();
+
+        while (true) {
+            System.out.println("Contact Management System");
+            System.out.println("1. Add Contact");
+            System.out.println("2. View Contacts");
+            System.out.println("3. Edit Contact");
+            System.out.println("4. Delete Contact");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter phone number: ");
+                    String phoneNumber = scanner.nextLine();
+                    System.out.print("Enter email: ");
+                    String email = scanner.nextLine();
+                    ContactInformation newContact = new ContactInformation(name, phoneNumber, email);
+                    contactManager.addContact(newContact);
+                    System.out.println("Contact added successfully.");
+                    break;
+                case 2:
+                    listContacts(contactManager);
+                    break;
+                case 3:
+                    listContacts(contactManager);
+                    System.out.print("Enter the index of the contact to edit: ");
+                    int editIndex = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+                    if (editIndex >= 0 && editIndex < contactManager.getAllContacts().size()) {
+                        System.out.print("Enter updated name: ");
+
+                        name = scanner.nextLine();
+                        System.out.print("Enter updated phone number: ");
+
+                        phoneNumber = scanner.nextLine();
+
+                        System.out.print("Enter updated email: ");
+                        email = scanner.nextLine();
+
+                        ContactInformation updatedContact = new ContactInformation(name, phoneNumber, email);
+                        contactManager.editContact(editIndex, updatedContact);
+                        System.out.println("Contact updated successfully.");
+                    } else {
+                        System.out.println("Invalid index.");
+                    }
+                    break;
+                case 4:
+                    listContacts(contactManager);
+                    System.out.print("Enter the index of the contact to delete: ");
+                    int deleteIndex = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+                    if (deleteIndex >= 0 && deleteIndex < contactManager.getAllContacts().size()) {
+                        contactManager.deleteContact(deleteIndex);
+                        System.out.println("Contact deleted successfully.");
+                    } else {
+                        System.out.println("Invalid index.");
+                    }
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    private static void listContacts(ContactManager contactManager) {
+        List<ContactInformation> contacts = contactManager.getAllContacts();
+        System.out.println("\nContact List:");
+        for (int i = 0; i < contacts.size(); i++) {
+            System.out.println("Index " + i + "\n" + contacts.get(i));
+        }
+    }
+}
